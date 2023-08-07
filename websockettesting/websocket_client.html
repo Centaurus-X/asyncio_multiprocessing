@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>WebSocket Test</title>
+    <style>
+        #messages {
+            height: 300px;
+            border: 1px solid black;
+            padding: 10px;
+            margin-bottom: 10px;
+            overflow: auto;
+        }
+        #inputMessage {
+            width: 70%;
+        }
+    </style>
+</head>
+<body>
+    <h1>WebSocket Test</h1>
+    <div id="messages"></div>
+    <input type="text" id="inputMessage" placeholder="Type a message..." />
+    <button id="sendMessage">Send</button>
+
+    <script>
+        const messageBox = document.getElementById('messages');
+        const inputMessage = document.getElementById('inputMessage');
+        const sendMessageButton = document.getElementById('sendMessage');
+
+        // Replace 'ws://localhost:1234' with your WebSocket server's address.
+        const ws = new WebSocket('ws://192.168.0.24:8765');
+
+        ws.onmessage = (event) => {
+            messageBox.innerHTML += `Received: ${event.data}<br>`;
+            messageBox.scrollTop = messageBox.scrollHeight;
+        };
+
+        sendMessageButton.onclick = () => {
+            const message = inputMessage.value;
+            ws.send(message);
+            inputMessage.value = '';
+            messageBox.innerHTML += `Sent: ${message}<br>`;
+            messageBox.scrollTop = messageBox.scrollHeight;
+        };
+    </script>
+</body>
+</html>
